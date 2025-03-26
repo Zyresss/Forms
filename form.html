@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="main-scene">
+        <section class="hero bb is-fullheight">
+            <div class="hero-body">
+                <progress id="progressbar" class="progress is-link custom-progress" value="30" max="90"
+                    style="width: 50%; background-color: black;">
+                    15%
+                </progress>
+                <div class="ml-5 mt-4 top">
+                    <a href="index.html">
+                        <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg" transform="matrix(1, 0, 0, 1, 0, 0)">
+
+                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"
+                                stroke="#CCCCCC" stroke-width="0.336" />
+
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M20 10L20.7071 10.7071L21.4142 10L20.7071 9.29289L20 10ZM3 18C3 18.5523 3.44772 19 4 19C4.55229 19 5 18.5523 5 18L3 18ZM15.7071 15.7071L20.7071 10.7071L19.2929 9.29289L14.2929 14.2929L15.7071 15.7071ZM20.7071 9.29289L15.7071 4.29289L14.2929 5.70711L19.2929 10.7071L20.7071 9.29289ZM20 9L10 9L10 11L20 11L20 9ZM3 16L3 18L5 18L5 16L3 16ZM10 9C6.13401 9 3 12.134 3 16L5 16C5 13.2386 7.23858 11 10 11L10 9Z"
+                                    fill="#33363F" />
+                            </g>
+
+                        </svg>
+                    </a>
+                </div>
+                <div id="form1" class="form">
+                    <div class="is-flex is-justify-content-center mb-4">
+                        <p class="title is-size-1 fillf" style="color: black;">Fill The Form</p>
+                    </div>
+                    <form class="box shadow" style="background-color: #FFE66D;">
+                        <div class="field">
+                            <label class="label" style="color: black;">Degree</label>
+                            <div class="control is-flex is-justify-content-center">
+                                <div class="select is-fullwidth">
+                                    <select style="background-color: #F7FFF7 ; color: black;">
+                                        <option>Licence 1</option>
+                                        <option>Licence 2</option>
+                                        <option>Licence 3</option>
+                                        <option>Master 1</option>
+                                        <option>Master 2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="is-flex is-justify-content-flex-end">
+                            <button class="button is-link " onclick="toggleForm2(event)">Submit</button>
+                        </div>
+                    </form>
+                </div>
+                <div id="form2" class="form is-hidden">
+                    <div class="is-flex is-justify-content-center mb-4">
+                        <p class="title is-size-1 fillf" style="color: black;">Fill The Form</p>
+                    </div>
+                    <form class="box shadow" style="background-color: #FFE66D; ">
+                        <div class="field">
+                            <label class="label" style="color: black;">Name</label>
+                            <div class="control is-flex is-justify-content-center">
+                                <input class="input custom-input mr-2" type="text" placeholder="First Name">
+                                <input class="input custom-input ml-2" type="text" placeholder="Last Name">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" style="color: black;">Address</label>
+                            <div class="control">
+                                <input class="input custom-input" type="text" placeholder="********" />
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label" style="color: black;">Identity</label>
+                            <div class="control is-flex is-justify-content-center">
+                                <div class="select">
+                                    <select>
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                    </select>
+                                </div>
+                                <input class="input custom-input ml-2" type="text" placeholder="Date of Birth">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <div class="control">
+                                <input class="input custom-input" type="text" placeholder="Matricule" />
+                            </div>
+                        </div>
+                        <div class="is-flex is-justify-content-space-between is-align-items-center">
+                            <div>
+                                <button class="button is-primary" onclick="toggleForm1(event)" style="color: #F7FFF7;">Back</button>
+                            </div>
+                            <div class="is-flex is-justify-content-flex-end">
+                                <button class="button is-link " onclick="toggleForm3(event)">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div id="form3" class="form is-hidden">
+                    <div class="is-flex is-justify-content-center mb-4">
+                        <p class="title is-size-1 fillf" style="color: black;">Fill The Form</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script>
+        function toggleForm2(event) {
+            event.preventDefault(); // Prevents the form from reloading the page
+            document.getElementById("form1").classList.add("is-hidden"); 
+            document.getElementById("form2").classList.remove("is-hidden"); 
+            document.getElementById("progressbar").value = 60;
+        }
+        function toggleForm1(event){
+            event.preventDefault();
+            document.getElementById("form1").classList.remove("is-hidden");
+            document.getElementById("form2").classList.add("is-hidden");
+            document.getElementById("progressbar").value = 30;
+        }
+        function toggleForm3(event) {
+            event.preventDefault();
+            document.getElementById("form2").classList.add("is-hidden");
+            document.getElementById("form3").classList.remove("is-hidden");
+            document.getElementById("progressbar").value = 100;
+        }
+    </script>
+</body>
+
+</html>

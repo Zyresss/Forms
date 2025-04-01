@@ -1,0 +1,31 @@
+:root {
+    background: white !important;
+}
+
+.b {
+    color: #00796b;
+}
+
+.input-container {
+    position: relative;
+}
+
+.custom-input {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid rgba(0, 0, 0, 0.30);
+    outline: none;
+    font-size: 18px;
+    padding: 5px 0;
+    width: 300px;
+    color: #333;
+}
+
+.custom-input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.w {
+    width: 400px;
+}
+

@@ -100,7 +100,8 @@
                         </div>
                         <div class="is-flex is-justify-content-space-between is-align-items-center">
                             <div>
-                                <button class="button is-primary" onclick="toggleForm1(event)" style="color: #F7FFF7;">Back</button>
+                                <button class="button is-primary" onclick="toggleForm1(event)"
+                                    style="color: #F7FFF7;">Back</button>
                             </div>
                             <div class="is-flex is-justify-content-flex-end">
                                 <button class="button is-link " onclick="toggleForm3(event)">Submit</button>
@@ -109,8 +110,23 @@
                     </form>
                 </div>
                 <div id="form3" class="form is-hidden">
-                    <div class="is-flex is-justify-content-center mb-4">
-                        <p class="title is-size-1 fillf" style="color: black;">Fill The Form</p>
+                    <form class="box shadow" style="background-color: #FFE66D; ">
+                        <div class="is-flex is-justify-content-center is-align-items-center mb-2">
+                            <div>
+
+                                <p class="title is-flex is-justify-content-center is-size-1 mb-2" style="color: black;">Success</p>
+                                <p class="subtitle is-flex is-justify-content-center" style="color: rgba(0, 0, 0, 0.659);">
+                                    Your form has been successfully saved</p>
+                            </div>
+                        </div>
+                    </form>
+                    <div>
+                        <a href="index.html">
+                            <div class="is-flex is-justify-content-center">
+                                <button class="button is-primary is-rounded is-size-4"
+                                    style="color: #F7FFF7;">Home</button>
+                            </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -119,11 +135,11 @@
     <script>
         function toggleForm2(event) {
             event.preventDefault(); // Prevents the form from reloading the page
-            document.getElementById("form1").classList.add("is-hidden"); 
-            document.getElementById("form2").classList.remove("is-hidden"); 
+            document.getElementById("form1").classList.add("is-hidden");
+            document.getElementById("form2").classList.remove("is-hidden");
             document.getElementById("progressbar").value = 60;
         }
-        function toggleForm1(event){
+        function toggleForm1(event) {
             event.preventDefault();
             document.getElementById("form1").classList.remove("is-hidden");
             document.getElementById("form2").classList.add("is-hidden");

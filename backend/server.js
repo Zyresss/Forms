@@ -13,6 +13,7 @@ const webAddress = `http://localhost:${port}`;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, '../frontend')));
+app.use('/assets', express.static(path.join(__dirname, '../assets'))); 
 
 // Routes
 app.get('/', (request, response) => {

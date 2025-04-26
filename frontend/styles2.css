@@ -1,17 +1,25 @@
 @media (prefers-color-scheme: dark) {
     :root {
-        background-color: #F7FFF7;
-        color: black;
+        background: radial-gradient(at center top, #E7F2DC, #fbfff6, #f3f5ba);
+        color: #325947;
     }
 
 }
+
+:root {
+    --bulma-success-h: 152deg;
+    --bulma-success-s: 28%;
+    --bulma-success-l: 27%;
+}
+
+
 
 * {
     color: black;
 }
 
 .section-title {
-    background-color: #FFE66D;
+    background-color: #325947;
     padding: 1rem;
     margin-bottom: 1.5rem;
     border-radius: 4px;
@@ -56,7 +64,11 @@
 }
 
 .w {
-    width: 20%;
+    width: 80%;
+}
+
+.wid {
+    width: 300px;
 }
 
 input[type="date"]::-webkit-calendar-picker-indicator {
@@ -88,10 +100,12 @@ br {
 .lfo {
     margin-top: 70px;
 }
-.rig{
+
+.rig {
     margin-right: 40px;
-    margin-left: 40px;
+    margin-left: 350px;
 }
+
 .middle {
     position: absolute;
     top: 50%;
@@ -105,4 +119,13 @@ br {
 
 .table {
     animation: transitionIn 1s;
+}
+
+.invisible {
+    display: none !important;
+}
+
+.ged {
+    position: absolute;
+    top: 0%;
 }

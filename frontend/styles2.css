@@ -133,8 +133,11 @@ br {
 }
 
 @media screen and (max-width: 768px) {
-    .ww {
-        display: none;
+    .field.is-horizontal {
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     }
 }
 

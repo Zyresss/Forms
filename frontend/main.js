@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (Array.isArray(type)) {
                 console.log(`${label}: [${type.join(', ')}]`);
 
-                htmlBody += `<div class="is-flex"><div class="mt-2 mx-3 wid ww" style="width: 330px ;"><label style="font-size: large;">${label} :</label></div> <div class="is-flex is-justify-content-center wid"><div class="select custom-select"><select style="width: 240px;">`;
+                htmlBody += `<div class="is-flex"><div class="mt-2 mx-3 wid ww" style="width: 330px ;"><label style="font-size: large; color: black;">${label} :</label></div> <div class="is-flex is-justify-content-center wid"><div class="select custom-select"><select style="width: 240px;">`;
                 for (const index in type) {
                     htmlBody += `<option>${type[index]}</option>`;
                 }
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
             else {
                 console.log(`${label}: ${type}`);
-                htmlBody += `<div class="is-flex"><div class="mt-2 mx-3 wid ww" style="width: 330px ;"><label style="font-size: large;">${label} :</label></div> <div class="is-flex is-justify-content-center wid"><input class="input custom-input w" placeholder="${label}" type="${type}"></div></div> <br>`;
+                htmlBody += `<div class="is-flex"><div class="mt-2 mx-3 wid ww" style="width: 330px ;"><label style="font-size: large; color: black;">${label} :</label></div> <div class="is-flex is-justify-content-center wid"><input class="input custom-input w" placeholder="${label}" type="${type}"></div></div> <br>`;
             }
         }
         htmlBody += "</div></div><br>";

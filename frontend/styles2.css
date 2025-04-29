@@ -11,12 +11,14 @@
     --bulma-success-s: 28%;
     --bulma-success-l: 27%;
 }
-
-
-
-* {
-    color: black;
+:root {
+    --bulma-primary-h: 176deg;
+    --bulma-primary-s: 56%;
+    --bulma-primary-l: 55%;
 }
+
+
+
 
 .section-title {
     background-color: #325947;
@@ -134,4 +136,12 @@ br {
     .ww {
         display: none;
     }
+}
+
+strong {
+    color: #D5D973;
+}
+
+a {
+    color: #D5D973;
 }

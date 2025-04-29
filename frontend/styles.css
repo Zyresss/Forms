@@ -49,7 +49,7 @@
     background: rgba(255, 255, 255, 0.2) !important;
     backdrop-filter: blur(10px);
     color: #325947 !important;
-    box-shadow: 4px 3px 20px rgba(96, 96, 96, 0.3);
+    box-shadow: 4px 5px 15px rgba(96, 96, 96, 0.1);
 }
 
 .hada {
@@ -91,7 +91,7 @@
 }
 
 .shadow {
-    box-shadow: 4px 3px 20px rgba(96, 96, 96, 0.3);
+    box-shadow: 4px 3px 20px rgba(96, 96, 96, 0.126);
 }
 
 .custom-input::placeholder {
@@ -142,5 +142,5 @@ hr {
 }
 
 strong {
-    color: #325947;
+    color: #D5D973;
 }

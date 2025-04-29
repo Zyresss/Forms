@@ -131,6 +131,10 @@ br {
     position: absolute;
     top: 0%;
 }
+.tele {
+    margin-left: 3rem;
+    margin-right: 3rem;
+}
 
 @media screen and (max-width: 768px) {
     .field.is-horizontal {
@@ -138,6 +142,12 @@ br {
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+    .tele {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        
     }
 }
 
@@ -148,3 +158,4 @@ strong {
 a {
     color: #D5D973;
 }
+

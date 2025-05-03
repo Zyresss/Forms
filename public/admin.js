@@ -1,8 +1,5 @@
 const table = document.getElementById('admin-table');
-const downloadTableButton = document.createElement('button');
-downloadTableButton.textContent = 'Download as excel';
-downloadTableButton.id = 'download-btn';
-downloadTableButton.classList = 'green has-text-weight-bold';
+const downloadTableButton = document.getElementById('download-btn');
 
 async function getData() {
     try {
@@ -32,23 +29,23 @@ function buildStyledSheet(data) {
     const body = data.map(row => header.map(h => row[h]));
     const sheetData = [header, ...body];
     const ws = XLSX.utils.aoa_to_sheet(sheetData);
-  
+
     const range = XLSX.utils.decode_range(ws['!ref']);
     for (let R = range.s.r; R <= range.e.r; ++R) {
-      for (let C = range.s.c; C <= range.e.c; ++C) {
-        const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
-        if (!ws[cell_address]) continue;
-        ws[cell_address].s = {
-          font: { bold: R === 0 },
-          fill: R === 0 ? { fgColor: { rgb: "D9E1F2" } } : undefined,
-          border: {
-            top: { style: "thin", color: { auto: 1 } },
-            bottom: { style: "thin", color: { auto: 1 } },
-            left: { style: "thin", color: { auto: 1 } },
-            right: { style: "thin", color: { auto: 1 } },
-          },
-        };
-      }
+        for (let C = range.s.c; C <= range.e.c; ++C) {
+            const cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+            if (!ws[cell_address]) continue;
+            ws[cell_address].s = {
+                font: { bold: R === 0 },
+                fill: R === 0 ? { fgColor: { rgb: "D9E1F2" } } : undefined,
+                border: {
+                    top: { style: "thin", color: { auto: 1 } },
+                    bottom: { style: "thin", color: { auto: 1 } },
+                    left: { style: "thin", color: { auto: 1 } },
+                    right: { style: "thin", color: { auto: 1 } },
+                },
+            };
+        }
     }
 
     ws['!cols'] = header.map(() => ({ wch: 15 }));
@@ -92,12 +89,11 @@ document.getElementById('get-admin-data-btn').addEventListener('click', async ()
     });
 
     htmlTableBody += '</tbody>';
+    table.innerHTML = htmlTableBody ;
+    document.getElementById('download-btn').classList.remove('invisible');
 
-    table.innerHTML = htmlTableBody;
-    if (!document.getElementById('download-btn')) {
-        downloadTableButton.addEventListener('click', () => downloadAsExcel(data));
-        document.getElementById('table-container').appendChild(downloadTableButton);
-    }
+    downloadTableButton.addEventListener('click', () => downloadAsExcel(data));
+    console.log(document.getElementById('table-container').innerHTML)
 
     console.log(table);
 });

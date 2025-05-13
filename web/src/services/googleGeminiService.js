@@ -1,12 +1,13 @@
-const { GoogleGenAI } = require('@google/genai');
+import { GoogleGenAI } from '@google/genai';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
 const aiPrompt = process.env.AI_PROMPT;
 
-async function generateGeminiContent() {
+export async function generateGeminiContent() {
     try {
         const result = await ai.models.generateContent({
             model: 'gemini-2.0-flash',
@@ -19,5 +20,3 @@ async function generateGeminiContent() {
         console.error('Gemini API error: ', error);
     }
 }
-
-module.exports = { generateGeminiContent };

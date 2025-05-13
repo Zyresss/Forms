@@ -13,7 +13,7 @@
 <body>
     <nav class="navbar is-fixed-top bb p-3" role="navigation" aria-label="main navigation" id="navbar">
         <div class="navbar-brand">
-            <a class="is-flex is-align-items-center ml-5">
+            <a href="index.html" class="is-flex is-align-items-center ml-5">
                 <?xml version="1.0" encoding="UTF-8"?>
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" viewBox="0 0 512 512"
@@ -163,7 +163,7 @@
             </a>
         </div>
     </nav>
-    <div class="main-scene">
+    <div class="main-scene" id="first-window">
         <section class="hero shadow bg is-fullheight">
             <div class="hero-body is-flex is-align-items-center is-justify-content-space-around">
                 <div class="hada">
@@ -171,12 +171,12 @@
                     <p class="subtitle is-flex is-justify-content-center" style="color: rgba(0, 0, 0, 0.659);">
                         University
                         Form Apply</p>
-                    <a href="loading.html">
+                    
                         <div class="is-flex is-justify-content-center is-align-content-space-between">
-                            <button class="button is-link is-rounded is-size-5" style="color: #3f6f59;">Get
+                            <button class="button is-link is-rounded is-size-5" onclick="showprompt()" style="color: #3f6f59;">Get
                                 Started</button>
                         </div>
-                    </a>
+                    
                 </div>
                 <svg class="mr-6 ml-6 image" xmlns="http://www.w3.org/2000/svg" width="500" height="500"
                     viewBox="0 0 765.83927 536.7767" xmlns:xlink="http://www.w3.org/1999/xlink" role="img"
@@ -316,7 +316,7 @@
         <footer class="footer" style="background-color: #234233;">
             <div class="content has-text-centered">
                 <p>
-                    <strong>Forms AI</strong> by <a>Y.A.Y.S</a> © 2025.
+                    <strong>Forms AI</strong> by <a>Y.A.Y.S.S.Z</a> © 2025.
                     The source code is licensed
                     <a href="https://opensource.org/license/mit">MIT</a>.
                 </p>
@@ -469,8 +469,25 @@
             </div>
         </footer>
     </div>
+    <div id="second-window" class="invisible">
+        <div class="is-flex is-justify-content-center is-align-items-center" style="height: 100vh;">
+            <div style="width: 70%; height: 70%; border-radius: 20px; padding: 20px;">
+                <textarea class="textarea" placeholder="Describe your form type." style="width: 70%; height: 84%; "></textarea>
+                <a href="form.html">
+                    <div class="has-text-right mt-4">
+                        <button class="button is-link is-rounded is-size-5" style="color: #3f6f59;">Submit</button>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
     <script>
-        
+        function showprompt() {
+            var firstWindow = document.getElementById("first-window");
+            var secondWindow = document.getElementById("second-window");
+            firstWindow.classList.add("invisible");
+            secondWindow.classList.remove("invisible");
+        }
     </script>
 </body>
 

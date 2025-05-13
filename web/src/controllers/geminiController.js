@@ -1,6 +1,6 @@
-const { generateGeminiContent } = require('../services/googleGeminiService');
+import { generateGeminiContent } from '../services/googleGeminiService.js';
 
-async function getGeminiResponse(request, response) {
+export async function getGeminiResponse(request, response) {
     try {
         const result = await generateGeminiContent();
         response.status(200).json({ result: result });
@@ -10,5 +10,3 @@ async function getGeminiResponse(request, response) {
         response.status(500).json({ error: 'Failed to fetch Gemini response' });
     }
 }
-
-module.exports = { getGeminiResponse };

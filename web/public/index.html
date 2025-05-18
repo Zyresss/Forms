@@ -7,13 +7,74 @@
     <title>Home</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
     <link rel="stylesheet" href="styles.css">
+    <style>
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            animation: transitionIn 1s;
+        }
+        .op{
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 1000;
+        }
 
+        .feature-card {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card h2 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+
+        .feature-card p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 15px;
+        }
+
+        .feature-card img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .features {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .feature-card {
+                max-width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
     <nav class="navbar is-fixed-top bb p-3" role="navigation" aria-label="main navigation" id="navbar">
         <div class="navbar-brand">
-            <a class="is-flex is-align-items-center ml-5">
+            <a href="index.html" class="is-flex is-align-items-center ml-5">
                 <?xml version="1.0" encoding="UTF-8"?>
                 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50px" viewBox="0 0 512 512"
@@ -163,20 +224,77 @@
             </a>
         </div>
     </nav>
-    <div class="main-scene">
+
+    <div class="features is-flex is-justify-content-center is-align-items-center invisible" id="prompt-scene"
+        style="height: 90vh;">
+        <div class="feature-card">
+            <div>📝</div>
+            <h2>Form Generator</h2>
+            <p>Design custom forms with our drag-and-drop builder. Choose from multiple field types including text
+                inputs, dropdowns, checkboxes, and more.</p>
+            <a href="form-generator.html">
+                <button class="button is-link is-rounded is-size-6" style="color: #3f6f59;">Create Form</button>
+            </a>
+        </div>
+
+        <div class="feature-card">
+            <div>📋</div>
+            <h2>My Forms</h2>
+            <p>Access your saved forms, share them with others, and collect responses. View all your created forms
+                in one convenient location.</p>
+            <a href="form-selector.html">
+                <button class="button is-link is-rounded is-size-6" style="color: #3f6f59;">View My Form</button>
+            </a>
+        </div>
+        <div class="ml-5 mt-4 op">
+            <a href="index.html">
+                <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    transform="matrix(1, 0, 0, 1, 0, 0)">
+
+                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+                        stroke-width="0.336" />
+
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            d="M20 10L20.7071 10.7071L21.4142 10L20.7071 9.29289L20 10ZM3 18C3 18.5523 3.44772 19 4 19C4.55229 19 5 18.5523 5 18L3 18ZM15.7071 15.7071L20.7071 10.7071L19.2929 9.29289L14.2929 14.2929L15.7071 15.7071ZM20.7071 9.29289L15.7071 4.29289L14.2929 5.70711L19.2929 10.7071L20.7071 9.29289ZM20 9L10 9L10 11L20 11L20 9ZM3 16L3 18L5 18L5 16L3 16ZM10 9C6.13401 9 3 12.134 3 16L5 16C5 13.2386 7.23858 11 10 11L10 9Z"
+                            fill="#33363F" />
+                    </g>
+
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- This is the user prompt scene -->
+    <div class="invisible" id="prompt-scen">
+        <div class="is-flex is-justify-content-center is-align-items-center" style="height: 100vh;">
+            <div style="width: 70%; height: 70%; border-radius: 20px; padding: 20px;">
+                <textarea class="textarea" id="user-prompt" placeholder="Describe your form type."
+                    style="width: 70%; height: 84%; "></textarea>
+                <a href="form.html">
+                    <div class="has-text-right mt-4">
+                        <button class="button is-link is-rounded is-size-5" id="generate-form"
+                            style="color: #3f6f59;">Submit</button>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- This is the main home scene -->
+    <div class="main-scene" id="home-scene">
         <section class="hero shadow bg is-fullheight">
             <div class="hero-body is-flex is-align-items-center is-justify-content-space-around">
                 <div class="hada">
                     <p class="title is-size-1" style="color: #325947;">AI Formulaire Generating</p>
                     <p class="subtitle is-flex is-justify-content-center" style="color: rgba(0, 0, 0, 0.659);">
-                        University
-                        Form Apply</p>
-                    <a href="loading.html">
-                        <div class="is-flex is-justify-content-center is-align-content-space-between">
-                            <button class="button is-link is-rounded is-size-5" style="color: #3f6f59;">Get
-                                Started</button>
-                        </div>
-                    </a>
+                        University Form Apply</p>
+                    <div class="is-flex is-justify-content-center is-align-content-space-between">
+                        <button class="button is-link is-rounded is-size-5" id="get-started" style="color: #3f6f59;">Get
+                            Started</button>
+                    </div>
                 </div>
                 <svg class="mr-6 ml-6 image" xmlns="http://www.w3.org/2000/svg" width="500" height="500"
                     viewBox="0 0 765.83927 536.7767" xmlns:xlink="http://www.w3.org/1999/xlink" role="img"
@@ -316,7 +434,7 @@
         <footer class="footer" style="background-color: #234233;">
             <div class="content has-text-centered">
                 <p>
-                    <strong>Forms AI</strong> by <a>Y.A.Y.S</a> © 2025.
+                    <strong>Forms AI</strong> by <a>Y.A.Y.S.S.Z</a> © 2025.
                     The source code is licensed
                     <a href="https://opensource.org/license/mit">MIT</a>.
                 </p>
@@ -469,9 +587,8 @@
             </div>
         </footer>
     </div>
-    <script>
-        
-    </script>
+
+    <script src="index.js" type="module" defer></script>
 </body>
 
 </html>

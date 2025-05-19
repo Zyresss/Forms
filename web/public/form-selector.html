@@ -253,6 +253,211 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Add these CSS rules to your existing styles to improve mobile responsiveness */
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+
+            /* Container padding adjustment */
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            /* Headings size adjustment */
+            h1 {
+                font-size: 2rem !important;
+                margin-bottom: 15px;
+            }
+
+            /* Navigation buttons */
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav-buttons a {
+                width: 100%;
+                margin: 0;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+                padding: 12px;
+            }
+
+            /* Form cards - already handled but ensuring single column */
+            .form-list {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .form-card {
+                padding: 15px;
+            }
+
+            .form-card h3 {
+                font-size: 1.1rem;
+            }
+
+            /* Form actions - stack buttons vertically on very small screens */
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-actions button {
+                width: 100%;
+            }
+
+            /* Modal adjustments */
+            .modal-content {
+                width: 95%;
+                margin: 10px auto;
+                padding: 15px;
+                max-height: 95vh;
+            }
+
+            /* Form elements in modal */
+            .view-form input,
+            .view-form select,
+            .view-form textarea {
+                font-size: 16px;
+                /* Prevents zoom on iOS */
+                padding: 12px;
+            }
+
+            /* Radio group - stack vertically on mobile */
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            /* Close button adjustment */
+            .close-modal {
+                font-size: 28px;
+                padding: 5px;
+            }
+        }
+
+        /* Extra small devices (phones, 480px and down) */
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            h1 {
+                font-size: 1.5rem !important;
+            }
+
+            .form-card {
+                padding: 12px;
+            }
+
+            .form-info {
+                font-size: 13px;
+            }
+
+            .form-preview {
+                font-size: 11px;
+            }
+
+            .modal-content {
+                padding: 10px;
+            }
+
+            /* Better button spacing */
+            .nav-buttons {
+                gap: 8px;
+            }
+
+            /* Form groups spacing */
+            .view-form .form-group {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Touch-friendly improvements for all mobile devices */
+        @media (max-width: 768px) {
+
+            /* Increase touch targets */
+            .form-card {
+                min-height: 44px;
+                /* Apple's recommended minimum touch target */
+            }
+
+            button {
+                min-height: 44px;
+                padding: 10px 15px;
+            }
+
+            /* Improve text readability */
+            .form-info,
+            .form-preview {
+                line-height: 1.5;
+            }
+
+            /* Better spacing for form elements */
+            .view-form label {
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            /* Checkbox and radio improvements */
+            .view-form input[type="checkbox"],
+            .view-form input[type="radio"] {
+                width: 18px;
+                height: 18px;
+                margin-right: 8px;
+            }
+
+            /* Success message adjustment */
+            .success-message {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        /* Landscape tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .form-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Dark mode consideration (optional) */
+        @media (prefers-color-scheme: dark) {
+            /* You can add dark mode styles here if needed */
+            /* This is just a placeholder - implement based on your design needs */
+        }
+
+        /* Ensure images and media don't overflow on small screens */
+        img,
+        video,
+        iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Better focus states for accessibility and mobile navigation */
+        button:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #325947;
+            outline-offset: 2px;
+        }
+
+        /* Horizontal scrolling prevention */
+        body,
+        html {
+            overflow-x: hidden;
+        }
     </style>
 </head>
 

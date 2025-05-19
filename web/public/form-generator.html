@@ -230,6 +230,33 @@
             z-index: 1000;
         }
 
+        .radio-group {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            /* spacing between options */
+        }
+
+        .radio-group>div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            /* spacing between label and radio */
+        }
+
+        .radio-group label {
+
+            /* move label before input */
+        }
+
+        .radioslot {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            /* spacing between options */
+        }
+
+
         /* Responsive design */
         @media (max-width: 768px) {
             .container {
@@ -277,7 +304,7 @@
         <div class="container">
             <!-- Form Builder Section -->
             <div class="form-builder">
-                
+
                 <div class="builder-section">
                     <h2>Form Fields</h2>
                     <div id="formFieldsList" class="form-fields-list">
@@ -386,6 +413,11 @@
                         <p class="empty-preview">Add form fields to see a preview here.</p>
                     </form>
                 </div>
+                <div class="">
+                    <button class="button is-link" id="saveForm" type="button">
+                        Save Form
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -443,8 +475,6 @@
             document.getElementById('cancelField').addEventListener('click', closeFieldModal);
 
 
-            // Copy code button
-            copyCodeBtn.addEventListener('click', copyToClipboard);
 
             // Form settings change handlers
             formTitle.addEventListener('input', updatePreview);
@@ -741,8 +771,8 @@
                             checkboxLabel.setAttribute('for', field.name);
                             checkboxLabel.textContent = field.label;
 
-                            checkboxContainer.appendChild(checkbox);
                             checkboxContainer.appendChild(checkboxLabel);
+                            checkboxContainer.appendChild(checkbox);
                             formGroup.appendChild(checkboxContainer);
                             break;
 
@@ -753,20 +783,22 @@
                             field.options.forEach((option, i) => {
                                 const radioId = `${field.name}_${i}`;
                                 const radioWrapper = document.createElement('div');
-
+                                const radioslot = document.createElement('div');
+                                radioslot.className = 'radio-slot';
                                 const radio = document.createElement('input');
+
                                 radio.type = 'radio';
                                 radio.id = radioId;
                                 radio.name = field.name;
                                 radio.value = option.toLowerCase().replace(/\s+/g, '_');
                                 if (i === 0 && field.required) radio.required = true;
 
-                                const radioLabel = document.createElement('label');
+                                const radioLabel = document.createElement('p');
                                 radioLabel.setAttribute('for', radioId);
                                 radioLabel.textContent = option;
-
-                                radioWrapper.appendChild(radio);
-                                radioWrapper.appendChild(radioLabel);
+                                radioWrapper.appendChild(radioslot);
+                                radioslot.appendChild(radioLabel);
+                                radioslot.appendChild(radio);
                                 radioContainer.appendChild(radioWrapper);
                             });
 
@@ -801,59 +833,34 @@
                     previewForm.appendChild(formGroup);
                 });
 
-                // Add submit button
-                const submitBtn = document.createElement('button');
-                submitBtn.className = 'button is-link';
-                submitBtn.type = 'submit';
-                submitBtn.textContent = 'Submit';
-                submitBtn.style.marginTop = '20px';
-                previewForm.appendChild(submitBtn);
+                
             }
 
-            /**
-             * Exports the HTML code of the form
-             */
+            const saveFormBtn = document.getElementById('saveForm');
+            saveFormBtn.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default button behavior
+                saveFormToLocalStorage();
+            });
+
             function saveFormToLocalStorage() {
-                // Create form data object
                 const formData = {
                     title: formTitle.value || 'Untitled Form',
                     action: formAction.value,
                     method: formMethod.value,
-                    fields: [...formFields], // Create a copy of the array
+                    fields: [...formFields],
                     dateCreated: new Date().toISOString()
                 };
 
-                // Get existing forms or create new array
                 const savedForms = JSON.parse(localStorage.getItem('savedForms')) || [];
-
-                // Add new form
                 savedForms.push(formData);
-
-                // Save to local storage
                 localStorage.setItem('savedForms', JSON.stringify(savedForms));
 
-                // Show success message
                 alert('Form saved successfully! You can access it in the "My Forms" page.');
+                console.log('Saved forms:', savedForms);
             }
-            /**
-             * Copies the HTML code to clipboard
-             */
-            function copyToClipboard() {
-                const code = htmlCode.textContent;
-                navigator.clipboard.writeText(code).then(() => {
-                    copyCodeBtn.textContent = 'Copied!';
-                    setTimeout(() => {
-                        copyCodeBtn.textContent = 'Copy Code';
-                    }, 2000);
-                }).catch(err => {
-                    console.error('Failed to copy: ', err);
-                });
-            }
-            const saveFormBtn = document.getElementById('saveForm');
-            saveFormBtn.addEventListener('click', saveFormToLocalStorage);
+
         });
     </script>
-    ```
 
 </body>
 

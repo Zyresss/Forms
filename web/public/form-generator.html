@@ -244,11 +244,6 @@
             /* spacing between label and radio */
         }
 
-        .radio-group label {
-
-            /* move label before input */
-        }
-
         .radioslot {
             display: flex;
             flex-direction: column;
@@ -577,6 +572,13 @@
 
                 <div class="is-flex is-justify-content-space-between">
                     <div class="field-buttons">
+                        <button class="button is-link" id="addSection">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3V21M9 21H15M19 6V3H5V6" stroke="#000000" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
                         <button class="button is-link" id="addText">
                             <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
@@ -729,6 +731,7 @@
             const copyCodeBtn = document.getElementById('copyCode');
 
             // Form field buttons
+            document.getElementById('addSection').addEventListener('click', () => openFieldModal('section'));
             document.getElementById('addText').addEventListener('click', () => openFieldModal('text'));
             document.getElementById('addEmail').addEventListener('click', () => openFieldModal('email'));
             document.getElementById('addPassword').addEventListener('click', () => openFieldModal('password'));
@@ -782,6 +785,13 @@
 
                 // Type-specific configurations
                 switch (fieldType) {
+                    case 'section':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label for="fieldLabel">Section Title</label>
+                        </div>
+                    `;
+                        break;
                     case 'text':
                     case 'email':
                     case 'password':
@@ -882,6 +892,9 @@
 
                 // Add type-specific properties
                 switch (fieldType) {
+                    case 'section':
+                        fieldData.title = label;
+                        break;
                     case 'text':
                     case 'email':
                     case 'password':
@@ -995,7 +1008,7 @@
                     formGroup.className = 'form-group';
 
                     // Create label (except for standalone checkboxes)
-                    if (field.type !== 'checkbox') {
+                    if (field.type !== 'checkbox' && field.type !== 'section') {
                         const label = document.createElement('label');
                         label.setAttribute('for', field.name);
                         label.textContent = field.label;
@@ -1006,6 +1019,14 @@
                             label.appendChild(requiredMark);
                         }
                         formGroup.appendChild(label);
+                    }
+                    if (field.type === 'section') {
+                        const sectionTitle = document.createElement('label');
+                        sectionTitle.style.fontSize = '1.5em';
+                        sectionTitle.setAttribute('for', field.name);
+                        sectionTitle.textContent = field.title;
+                        formGroup.appendChild(sectionTitle);
+
                     }
 
                     // Create field based on type

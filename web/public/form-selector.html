@@ -617,6 +617,9 @@
 
                     // Handle different field types
                     switch (field.type) {
+                        case 'section':
+                            formHTML += `<label for="field_${fieldIndex}" style="font-size: 1.5rem;">${field.label}</label>`;
+                            break;
                         case 'text':
                         case 'email':
                         case 'password':

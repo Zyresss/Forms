@@ -16,7 +16,8 @@
             margin-bottom: 50px;
             animation: transitionIn 1s;
         }
-        .op{
+
+        .op {
             position: absolute;
             top: 0px;
             left: 0px;
@@ -60,12 +61,35 @@
 
         @media (max-width: 768px) {
             .features {
-                flex-direction: column;
+                flex-direction: row;
                 align-items: center;
+                gap: 30px;
+                margin: 20px;
             }
 
             .feature-card {
+                width: 100%;
                 max-width: 100%;
+                transition: none;
+            }
+
+            .feature-card:hover {
+                transform: none;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .feature-card {
+                padding: 20px;
+            }
+
+            .feature-card h2 {
+                font-size: 20px;
+            }
+
+            .feature-card div {
+                font-size: 36px;
             }
         }
     </style>
@@ -246,7 +270,7 @@
                 <button class="button is-link is-rounded is-size-6" style="color: #3f6f59;">View My Form</button>
             </a>
         </div>
-        <div class="ml-5 mt-4 op">
+        <div name="bonus" class="ml-5 mt-4 op">
             <a href="index.html">
                 <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                     transform="matrix(1, 0, 0, 1, 0, 0)">

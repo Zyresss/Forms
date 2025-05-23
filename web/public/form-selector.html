@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Selector</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            color: #325947;
+        }
+
+        body {
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1,
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        /* Navigation */
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-buttons a {
+            display: inline-block;
+            color: #325947;
+            margin: 0 10px;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+
+        /* Form List Styles */
+        .form-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .form-card {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-card h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .form-preview {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 15px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .form-bottom {
+            margin-top: auto;
+        }
+
+        /* No Forms Message */
+        .no-forms {
+            text-align: center;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-forms p {
+            font-size: 18px;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .no-forms a {
+            display: inline-block;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        /* Form Viewer Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            margin: 30px auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #95a5a6;
+            transition: color 0.3s;
+        }
+
+        .close-modal:hover {
+            color: #7f8c8d;
+        }
+
+        .form-container {
+            margin-top: 20px;
+        }
+
+        .form-container h2 {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        /* Form Styles (for viewing the form) */
+        .view-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .view-form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .view-form input,
+        .view-form select,
+        .view-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .view-form input[type="checkbox"],
+        .view-form input[type="radio"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        .view-form .radio-group div {
+            margin-bottom: 5px;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            /* spacing between options */
+        }
+
+        .radio-group>div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            /* spacing between label and radio */
+        }
+
+        .radio-group label {
+
+            /* move label before input */
+        }
+
+        .radioslot {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            /* spacing between options */
+        }
+
+
+        /* Success message */
+        .success-message {
+            padding: 15px;
+            background-color: #D5D973;
+            color: #325947;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .form-list {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Add these CSS rules to your existing styles to improve mobile responsiveness */
+
+        /* Enhanced Mobile Responsiveness */
+        @media (max-width: 768px) {
+
+            /* Container padding adjustment */
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 0 10px;
+            }
+
+            /* Headings size adjustment */
+            h1 {
+                font-size: 2rem !important;
+                margin-bottom: 15px;
+            }
+
+            /* Navigation buttons */
+            .nav-buttons {
+                flex-direction: column;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+
+            .nav-buttons a {
+                width: 100%;
+                margin: 0;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+                padding: 12px;
+            }
+
+            /* Form cards - already handled but ensuring single column */
+            .form-list {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .form-card {
+                padding: 15px;
+            }
+
+            .form-card h3 {
+                font-size: 1.1rem;
+            }
+
+            /* Form actions - stack buttons vertically on very small screens */
+            .form-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .form-actions button {
+                width: 100%;
+            }
+
+            /* Modal adjustments */
+            .modal-content {
+                width: 95%;
+                margin: 10px auto;
+                padding: 15px;
+                max-height: 95vh;
+            }
+
+            /* Form elements in modal */
+            .view-form input,
+            .view-form select,
+            .view-form textarea {
+                font-size: 16px;
+                /* Prevents zoom on iOS */
+                padding: 12px;
+            }
+
+            /* Radio group - stack vertically on mobile */
+            .radio-group {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            /* Close button adjustment */
+            .close-modal {
+                font-size: 28px;
+                padding: 5px;
+            }
+        }
+
+        /* Extra small devices (phones, 480px and down) */
+        @media (max-width: 480px) {
+            body {
+                padding: 5px;
+            }
+
+            h1 {
+                font-size: 1.5rem !important;
+            }
+
+            .form-card {
+                padding: 12px;
+            }
+
+            .form-info {
+                font-size: 13px;
+            }
+
+            .form-preview {
+                font-size: 11px;
+            }
+
+            .modal-content {
+                padding: 10px;
+            }
+
+            /* Better button spacing */
+            .nav-buttons {
+                gap: 8px;
+            }
+
+            /* Form groups spacing */
+            .view-form .form-group {
+                margin-bottom: 15px;
+            }
+        }
+
+        /* Touch-friendly improvements for all mobile devices */
+        @media (max-width: 768px) {
+
+            /* Increase touch targets */
+            .form-card {
+                min-height: 44px;
+                /* Apple's recommended minimum touch target */
+            }
+
+            button {
+                min-height: 44px;
+                padding: 10px 15px;
+            }
+
+            /* Improve text readability */
+            .form-info,
+            .form-preview {
+                line-height: 1.5;
+            }
+
+            /* Better spacing for form elements */
+            .view-form label {
+                margin-bottom: 8px;
+                font-size: 14px;
+            }
+
+            /* Checkbox and radio improvements */
+            .view-form input[type="checkbox"],
+            .view-form input[type="radio"] {
+                width: 18px;
+                height: 18px;
+                margin-right: 8px;
+            }
+
+            /* Success message adjustment */
+            .success-message {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+
+        /* Landscape tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .form-list {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+        }
+
+        /* Dark mode consideration (optional) */
+        @media (prefers-color-scheme: dark) {
+            /* You can add dark mode styles here if needed */
+            /* This is just a placeholder - implement based on your design needs */
+        }
+
+        /* Ensure images and media don't overflow on small screens */
+        img,
+        video,
+        iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Better focus states for accessibility and mobile navigation */
+        button:focus,
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: 2px solid #325947;
+            outline-offset: 2px;
+        }
+
+        /* Horizontal scrolling prevention */
+        body,
+        html {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="has-text-weight-bold is-size-2" style="color: #325947 ;">Form Selector</h1>
+
+        <div class="nav-buttons">
+            <a href="form-generator.html">
+                <button class="button is-link is-size-5 is-rounded" style="color: #325947 ;">Form Generator</button>
+            </a>
+            <a href="#" class="active">
+                <button class="button is-size-5 is-rounded is-link" style="color: #325947 ;">My Forms</button>
+            </a>
+        </div>
+
+        <div id="formsList" class="form-list">
+            <!-- Forms will be dynamically loaded here -->
+        </div>
+
+        <div id="noForms" class="no-forms" style="display: none;">
+            <p>You haven't created any forms yet.</p>
+            <a href="form-generator.html">
+                <button class="button is-link is-size-5" style="color: #325947;">Create a From</button>
+            </a>
+        </div>
+    </div>
+
+    <!-- Form Viewer Modal -->
+    <div id="formModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" id="closeModal">&times;</span>
+            <div id="successMessage" class="success-message">
+                Form submitted successfully!
+            </div>
+            <div id="formContainer" class="form-container">
+                <!-- Form will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // DOM elements
+            const formsList = document.getElementById('formsList');
+            const noForms = document.getElementById('noForms');
+            const formModal = document.getElementById('formModal');
+            const formContainer = document.getElementById('formContainer');
+            const closeModal = document.getElementById('closeModal');
+            const successMessage = document.getElementById('successMessage');
+
+            // Close modal event
+            closeModal.addEventListener('click', function () {
+                formModal.style.display = 'none';
+                successMessage.style.display = 'none';
+            });
+
+            // Close modal when clicking outside
+            window.addEventListener('click', function (event) {
+                if (event.target === formModal) {
+                    formModal.style.display = 'none';
+                    successMessage.style.display = 'none';
+                }
+            });
+
+            // Load saved forms from localStorage
+            loadForms();
+
+            /**
+             * Loads and displays saved forms
+             */
+            function loadForms() {
+                // Check if there are saved forms
+                const savedForms = JSON.parse(localStorage.getItem('savedForms')) || [];
+
+                if (savedForms.length === 0) {
+                    formsList.style.display = 'none';
+                    noForms.style.display = 'block';
+                    return;
+                }
+
+                // Display forms
+                formsList.innerHTML = '';
+                savedForms.forEach((form, index) => {
+                    const formCard = document.createElement('div');
+                    formCard.className = 'form-card';
+
+                    // Generate field summary
+                    const fieldCount = form.fields.length;
+                    const fieldTypes = [...new Set(form.fields.map(field => field.type))];
+
+                    // Preview of fields
+                    let fieldsPreview = '';
+                    if (fieldCount > 0) {
+                        fieldsPreview = form.fields.slice(0, 3).map(field => field.label).join(', ');
+                        if (fieldCount > 3) {
+                            fieldsPreview += '...';
+                        }
+                    }
+
+                    formCard.innerHTML = `
+                        <h3>${form.title || 'Untitled Form'}</h3>
+                        <div class="form-info">
+                            <strong>${fieldCount}</strong> fields | 
+                            ${fieldTypes.length > 0 ? fieldTypes.join(', ') : 'No fields'}
+                        </div>
+                        <div class="form-preview">
+                            ${fieldsPreview || 'No fields added to this form.'}
+                        </div>
+                        <div class="form-bottom">
+                            <div class="form-actions">
+                                <button class="button is-link fill-btn" style="color: #325947 ;" data-index="${index}">Fill Form</button>
+                                <button class="button is-danger delete-btn" style="color: #325947 ;" data-index="${index}">Delete</button>
+                            </div>
+                        </div>
+                    `;
+
+                    formsList.appendChild(formCard);
+                });
+
+                // Add event listeners to buttons
+                document.querySelectorAll('.fill-btn').forEach(btn => {
+                    btn.addEventListener('click', function () {
+                        const index = parseInt(this.getAttribute('data-index'));
+                        openForm(index);
+                    });
+                });
+
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                        const index = parseInt(this.getAttribute('data-index'));
+                        deleteForm(index);
+                    });
+                });
+            }
+
+            /**
+             * Opens a form for filling
+             * @param {number} index - Index of the form to open
+             */
+            function openForm(index) {
+                const savedForms = JSON.parse(localStorage.getItem('savedForms')) || [];
+                const form = savedForms[index];
+
+                if (!form) return;
+
+                // Create form HTML
+                let formHTML = `
+                    <h2>${form.title || 'Untitled Form'}</h2>
+                    <form id="viewForm" class="view-form" data-index="${index}">
+                `;
+
+                // Add fields
+                form.fields.forEach((field, fieldIndex) => {
+                    formHTML += `<div class="form-group">`;
+
+                    // Handle different field types
+                    switch (field.type) {
+                        case 'section':
+                            formHTML += `<label for="field_${fieldIndex}" style="font-size: 1.5rem;">${field.label}</label>`;
+                            break;
+                        case 'text':
+                        case 'email':
+                        case 'password':
+                        case 'number':
+                            // Add label
+                            formHTML += `
+                                <label for="field_${fieldIndex}">${field.label}${field.required ? ' <span style="color: red;">*</span>' : ''}</label>
+                                <input type="${field.type}" id="field_${fieldIndex}" name="${field.name}" 
+                                    ${field.placeholder ? `placeholder="${field.placeholder}"` : ''} 
+                                    ${field.required ? 'required' : ''}>
+                            `;
+                            break;
+
+                        case 'textarea':
+                            formHTML += `
+                                <label for="field_${fieldIndex}">${field.label}${field.required ? ' <span style="color: red;">*</span>' : ''}</label>
+                                <textarea id="field_${fieldIndex}" name="${field.name}" rows="${field.rows || 4}" 
+                                    ${field.required ? 'required' : ''}>${field.placeholder || ''}</textarea>
+                            `;
+                            break;
+
+                        case 'checkbox':
+                            formHTML += `
+                                <div>
+                                    <label for="field_${fieldIndex}">${field.label}</label>
+                                    <input type="checkbox" id="field_${fieldIndex}" name="${field.name}" 
+                                        ${field.checked ? 'checked' : ''} ${field.required ? 'required' : ''}>
+                                </div>
+                            `;
+                            break;
+
+                        case 'radio':
+                            formHTML += `<label>${field.label}${field.required ? ' <span style="color: red;">*</span>' : ''}</label>`;
+                            formHTML += `<div class="radio-group">`;
+
+                            field.options.forEach((option, optionIndex) => {
+                                const radioId = `field_${fieldIndex}_option_${optionIndex}`;
+                                formHTML += `
+                                    <div>
+                                        <div class="radio-slot is-flex">
+                                            <input type="radio" id="${radioId}" name="${field.name}" 
+                                                value="${option.toLowerCase().replace(/\s+/g, '_')}" 
+                                                ${optionIndex === 0 && field.required ? 'required' : ''}>
+                                            <p for="${radioId}">${option}</p>
+                                        </div>
+                                    </div>
+                                `;
+                                /*  
+                                radioWrapper.appendChild(radioslot);
+                                radioslot.appendChild(radioLabel);
+                                radioslot.appendChild(radio);
+                                radioContainer.appendChild(radioWrapper);*/
+                            });
+
+                            formHTML += `</div>`;
+                            break;
+
+                        case 'select':
+                            formHTML += `
+                                <label for="field_${fieldIndex}">${field.label}${field.required ? ' <span style="color: red;">*</span>' : ''}</label>
+                                <select id="field_${fieldIndex}" name="${field.name}" ${field.required ? 'required' : ''}>
+                            `;
+
+                            if (field.required) {
+                                formHTML += `<option value="">-- Please select --</option>`;
+                            }
+
+                            field.options.forEach(option => {
+                                formHTML += `
+                                    <option value="${option.toLowerCase().replace(/\s+/g, '_')}">${option}</option>
+                                `;
+                            });
+
+                            formHTML += `</select>`;
+                            break;
+                        case 'file':
+                            formHTML += `
+        <label for="field_${fieldIndex}">${field.label}${field.required ? ' <span style="color: red;">*</span>' : ''}</label>
+        <input type="file" id="field_${fieldIndex}" name="${field.name}" 
+            ${field.accept ? `accept="${field.accept}"` : ''} 
+            ${field.multiple ? 'multiple' : ''} 
+            ${field.required ? 'required' : ''}>
+    `;
+
+                            // Add file info display
+                            let fileInfo = '';
+                            if (field.accept) {
+                                fileInfo += `Accepted: ${field.accept.replace(/\*/g, 'all')} `;
+                            }
+                            if (field.maxSize) {
+                                fileInfo += `Max size: ${field.maxSize}MB `;
+                            }
+                            if (field.multiple) {
+                                fileInfo += `(Multiple files allowed)`;
+                            }
+
+                            if (fileInfo) {
+                                formHTML += `<div style="font-size: 12px; color: #666; margin-top: 5px;">${fileInfo}</div>`;
+                            }
+                            break;
+                    }
+
+                    formHTML += `</div>`;
+                });
+
+                // Add submit button
+                formHTML += `
+                    <button class="button is-link" type="submit" style="color: #325947 ;">Submit</button>
+                    </form>
+                `;
+
+                // Set form HTML and display modal
+                formContainer.innerHTML = formHTML;
+                formModal.style.display = 'block';
+
+                // Add submit event to the form
+                document.getElementById('viewForm').addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    // Show success message
+                    successMessage.style.display = 'block';
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+
+                    // Reset form after submission
+                    setTimeout(() => {
+                        this.reset();
+                    }, 1000);
+                });
+            }
+
+            /**
+             * Deletes a form
+             * @param {number} index - Index of the form to delete
+             */
+            function deleteForm(index) {
+                if (!confirm('Are you sure you want to delete this form?')) return;
+
+                const savedForms = JSON.parse(localStorage.getItem('savedForms')) || [];
+                savedForms.splice(index, 1);
+                localStorage.setItem('savedForms', JSON.stringify(savedForms));
+
+                // Reload forms
+                loadForms();
+
+                // Show "No forms" message if all forms are deleted
+                if (savedForms.length === 0) {
+                    formsList.style.display = 'none';
+                    noForms.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>

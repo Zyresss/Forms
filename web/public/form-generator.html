@@ -1,0 +1,1221 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Generator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            color: #325947;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+
+        .form-box {
+            animation: transitionIn 1s;
+        }
+
+        /* Form Controls and Builder Styles */
+        .form-builder {
+
+            width: 400px !important;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .builder-section {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .builder-section h2 {
+            margin-bottom: 15px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+
+        .control-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        input[type="checkbox"] {
+            width: auto;
+            margin-right: 5px;
+        }
+
+        button {
+            color: #325947 !important;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+        }
+
+
+        .field-buttons {
+            display: flex;
+            flex-wrap: nowrap;
+            /* Prevent wrapping */
+            gap: 10px;
+            /* Space between buttons */
+            margin-bottom: 15px;
+            overflow-x: auto;
+            /* Optional: allow scroll if too many buttons */
+        }
+
+        .field-buttons .button {
+            width: 45px;
+            height: 40px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+
+        /* Preview Area Styles */
+        .preview-area {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-form {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px dashed #ccc;
+            background-color: #f9f9f9;
+            min-height: 200px;
+        }
+
+        .preview-form label {
+            margin-top: 10px;
+        }
+
+        /* Form Fields List */
+        .form-fields-list {
+            margin-top: 20px;
+        }
+
+        .field-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            border-left: 3px solid #D5D973;
+            position: relative;
+        }
+
+        .field-item .field-title {
+            font-weight: bold;
+        }
+
+        .field-item .field-details {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .field-item .delete-field {
+            position: absolute;
+            right: 10px;
+            top: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .field-item .delete-field:hover {
+            background-color: #c0392b;
+        }
+
+        /* Code Output Area */
+        .code-output {
+            margin-top: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .code-output pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 14px;
+            background-color: #f1f1f1;
+            padding: 10px;
+            border-radius: 3px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .copy-btn:hover {
+            background-color: #219653;
+        }
+
+        .op {
+            position: fixed;
+            top: 0px;
+            left: 0px;
+            z-index: 1000;
+        }
+
+        .radio-group {
+            display: flex;
+            flex-direction: row;
+            gap: 1rem;
+            /* spacing between options */
+        }
+
+        .radio-group>div {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            /* spacing between label and radio */
+        }
+
+        .radioslot {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            /* spacing between options */
+        }
+
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .op {
+                display: flex;
+                position: fixed;
+                top: auto;
+                left: auto;
+                right: 10px;
+                bottom: 0px;
+            }
+        }
+
+        /* Additional Responsive CSS for Form Generator */
+
+        /* Base responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                padding: 0 15px;
+            }
+
+            .form-builder,
+            .preview-area {
+                width: 100% !important;
+                max-width: 100%;
+                margin-bottom: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem !important;
+                margin-top: 15px;
+            }
+
+            .field-buttons {
+                justify-content: flex-start;
+                margin-bottom: 15px;
+                overflow-x: scroll;
+                -webkit-overflow-scrolling: touch;
+                padding-bottom: 5px;
+            }
+
+            .field-buttons .button {
+                min-width: 45px;
+                flex-shrink: 0;
+            }
+
+            .preview-form {
+                padding: 10px;
+            }
+
+            #formFieldsList {
+                max-height: 250px;
+                overflow-y: auto;
+            }
+        }
+
+        /* Even smaller screens */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.5rem !important;
+            }
+
+            .form-box {
+                padding: 0;
+            }
+
+            .field-item {
+                padding: 8px;
+            }
+
+            .field-item .field-title {
+                font-size: 14px;
+            }
+
+            .field-item .field-details {
+                font-size: 11px;
+            }
+
+            /* Adjust modal for smaller screens */
+            #fieldModal {
+                overflow-y: auto;
+                display: flex;
+                align-items: flex-start !important;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            #fieldModal>div {
+                width: 95%;
+                max-width: 95%;
+                margin: 20px auto;
+                padding: 15px;
+                position: relative;
+                top: 0;
+                transform: none;
+            }
+
+            /* Adjust AI prompt modal */
+            #prompt-scen .textarea {
+                width: 90% !important;
+                height: 70% !important;
+            }
+
+            /* Make form controls easier to tap */
+            input,
+            select,
+            textarea,
+            .button {
+                padding: 10px !important;
+                font-size: 16px !important;
+                /* Prevents iOS zoom on focus */
+            }
+
+            /* Improve form fields display */
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            /* Make the radio groups stack vertically on mobile */
+            .radio-group {
+                flex-direction: column !important;
+                gap: 0.5rem !important;
+            }
+
+            .radio-group>div {
+                width: 100%;
+            }
+
+            /* Adjust buttons in the preview area */
+            .preview-area .button,
+            .is-flex .button {
+                padding: 8px 12px !important;
+                font-size: 14px !important;
+            }
+
+            /* Fix the fixed position button */
+            .op {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .op a svg {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* Fix for iPhone 5/SE and other very small devices */
+        @media (max-width: 320px) {
+            .container {
+                padding: 0 10px;
+            }
+
+            h1 {
+                font-size: 1.3rem !important;
+            }
+
+            .builder-section h2 {
+                font-size: 16px;
+            }
+
+            .field-buttons .button {
+                width: 40px;
+                height: 35px;
+            }
+
+            #fieldModal>div {
+                margin: 30px auto;
+                padding: 10px;
+            }
+
+            /* Further reduce button size */
+            .button {
+                padding: 6px 10px !important;
+                font-size: 13px !important;
+            }
+        }
+
+        /* Also update the main modal CSS to ensure it works well on all devices */
+        #fieldModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        #fieldModal>div {
+            background-color: white;
+            width: 90%;
+            max-width: 500px;
+            margin: 10vh auto;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        #modalContent {
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        /* Add this at the beginning */
+        html,
+        body {
+            -webkit-overflow-scrolling: touch;
+            overflow-x: hidden;
+            max-width: 100%;
+        }
+
+        /* Fix for when the keyboard appears on mobile */
+        @media (max-height: 500px) {
+            #fieldModal {
+                align-items: flex-start;
+            }
+
+            #fieldModal>div {
+                margin: 10px auto;
+                max-height: 85vh;
+                overflow-y: auto;
+            }
+
+            #modalContent {
+                max-height: 60vh;
+                overflow-y: auto;
+            }
+        }
+
+        /* Improve form inputs on touch devices */
+        @media (hover: none) {
+
+            input[type="checkbox"],
+            input[type="radio"] {
+                min-width: 20px;
+                min-height: 20px;
+            }
+
+            label {
+                padding: 8px 0;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1 class="has-text-weight-bold is-size-2 has-text-success mt-2" style="color: #325947 !important;">Form Generator
+    </h1>
+
+    <div class="ml-5 mt-4 op">
+        <a href="index.html">
+            <svg width="50px" height="50px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+                transform="matrix(1, 0, 0, 1, 0, 0)">
+
+                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" stroke="#CCCCCC"
+                    stroke-width="0.336" />
+
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M20 10L20.7071 10.7071L21.4142 10L20.7071 9.29289L20 10ZM3 18C3 18.5523 3.44772 19 4 19C4.55229 19 5 18.5523 5 18L3 18ZM15.7071 15.7071L20.7071 10.7071L19.2929 9.29289L14.2929 14.2929L15.7071 15.7071ZM20.7071 9.29289L15.7071 4.29289L14.2929 5.70711L19.2929 10.7071L20.7071 9.29289ZM20 9L10 9L10 11L20 11L20 9ZM3 16L3 18L5 18L5 16L3 16ZM10 9C6.13401 9 3 12.134 3 16L5 16C5 13.2386 7.23858 11 10 11L10 9Z"
+                        fill="#33363F" />
+                </g>
+
+            </svg>
+        </a>
+    </div>
+    <div class="form-box">
+        <div class="container">
+            <!-- Form Builder Section -->
+            <div class="form-builder">
+
+                <div class="builder-section">
+                    <h2>Form Fields</h2>
+                    <div id="formFieldsList" class="form-fields-list">
+                        <div class="empty-message">No fields added yet. Click the buttons above to add form fields.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="builder-section">
+                    <h2>Form Settings</h2>
+                    <div class="">
+                        <div class="control-group">
+                            <label for="formTitle">Form Title</label>
+                            <input type="text" id="formTitle" placeholder="Enter form title" style="width: 90%;">
+                        </div>
+                        <div class="control-group">
+                            <label for="formDescription">Form Description</label>
+                            <textarea id="formDescription" placeholder="Enter form description" rows="4"
+                                style="width: 90%; resize: none;"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="preview-area">
+
+                <div class="is-flex is-justify-content-space-between">
+                    <div class="field-buttons">
+                        <button class="button is-link" id="addSection">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 3V21M9 21H15M19 6V3H5V6" stroke="#000000" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addText">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M22 12V21M2 21L8 3L14 21M11 14H5M19 21C17.3431 21 16 19.6569 16 18V15C16 13.3431 17.3431 12 19 12C20.6569 12 22 13.3431 22 15V18C22 19.6569 20.6569 21 19 21Z"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+
+                        <button class="button is-link" id="addEmail">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M3 8L8.44992 11.6333C9.73295 12.4886 10.3745 12.9163 11.0678 13.0825C11.6806 13.2293 12.3194 13.2293 12.9322 13.0825C13.6255 12.9163 14.2671 12.4886 15.5501 11.6333L21 8M6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V8.2C21 7.0799 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.07989 19 6.2 19Z"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addPassword">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M16 8.00169L16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7V8.00169M16 8.00169C15.7563 8 15.4907 8 15.2 8H8.8C8.50929 8 8.24373 8 8 8.00169M16 8.00169C17.1649 8.00979 17.8313 8.05658 18.362 8.32698C18.9265 8.6146 19.3854 9.07354 19.673 9.63803C20 10.2798 20 11.1198 20 12.8V16.2C20 17.8802 20 18.7202 19.673 19.362C19.3854 19.9265 18.9265 20.3854 18.362 20.673C17.7202 21 16.8802 21 15.2 21H8.8C7.11984 21 6.27976 21 5.63803 20.673C5.07354 20.3854 4.6146 19.9265 4.32698 19.362C4 18.7202 4 17.8802 4 16.2V12.8C4 11.1198 4 10.2798 4.32698 9.63803C4.6146 9.07354 5.07354 8.6146 5.63803 8.32698C6.16873 8.05658 6.83507 8.00979 8 8.00169M10 11V18M14 11V18M8.5 12.5H15.5M8.5 16.5H15.5"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addTextarea">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M4 12H20M4 8H20M4 16H12" stroke="#000000" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addCheckbox">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 12.5L10.5 15L16 9M7.2 20H16.8C17.9201 20 18.4802 20 18.908 19.782C19.2843 19.5903 19.5903 19.2843 19.782 18.908C20 18.4802 20 17.9201 20 16.8V7.2C20 6.0799 20 5.51984 19.782 5.09202C19.5903 4.71569 19.2843 4.40973 18.908 4.21799C18.4802 4 17.9201 4 16.8 4H7.2C6.0799 4 5.51984 4 5.09202 4.21799C4.71569 4.40973 4.40973 4.71569 4.21799 5.09202C4 5.51984 4 6.07989 4 7.2V16.8C4 17.9201 4 18.4802 4.21799 18.908C4.40973 19.2843 4.71569 19.5903 5.09202 19.782C5.51984 20 6.07989 20 7.2 20Z"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addRadio">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M11 8L16 8.00053M11 12L16 12.0005M11 16L16 16.0005M8 16H8.01M8 12H8.01M8 8H8.01M7.2 4H16.8C17.9201 4 18.4802 4 18.908 4.21799C19.2843 4.40973 19.5903 4.71569 19.782 5.09202C20 5.51984 20 6.0799 20 7.2V16.8C20 17.9201 20 18.4802 19.782 18.908C19.5903 19.2843 19.2843 19.5903 18.908 19.782C18.4802 20 17.9201 20 16.8 20H7.2C6.0799 20 5.51984 20 5.09202 19.782C4.71569 19.5903 4.40973 19.2843 4.21799 18.908C4 18.4802 4 17.9201 4 16.8V7.2C4 6.0799 4 5.51984 4.21799 5.09202C4.40973 4.71569 4.71569 4.40973 5.09202 4.21799C5.51984 4 6.0799 4 7.2 4Z"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addSelect">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M8 6L21 6.00078M8 12L21 12.0008M8 18L21 18.0007M3 6.5H4V5.5H3V6.5ZM3 12.5H4V11.5H3V12.5ZM3 18.5H4V17.5H3V18.5Z"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addNumber">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M7 3V21M7 21L3 17M7 21L11 17M16.5 5L18.5 3V10M16.5 10H20.5M20.5 18L18 21M21 16.5C21 17.8807 19.8807 19 18.5 19C17.1193 19 16 17.8807 16 16.5C16 15.1193 17.1193 14 18.5 14C19.8807 14 21 15.1193 21 16.5Z"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <button class="button is-link" id="addFile">
+                            <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M14 3V7C14 7.55228 14.4477 8 15 8H19M14 3L19 8M14 3H10C8.89543 3 8 3.89543 8 5V19C8 20.1046 8.89543 21 10 21H18C19.1046 21 20 20.1046 20 19V8M14 3V7C14 7.55228 14.4477 8 15 8H19M12 12V16M10 14H14"
+                                    stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="has-text-right">
+                        <button class="button is-success is-rounded" id="generateCode"
+                            style="background-color: #325947 !important; color: #E7F2DC !important;">AI
+                            assistant</button>
+                    </div>
+                </div>
+
+                <h2>Form Preview</h2>
+                <div id="previewForm" class="preview-form">
+                    <h3 id="previewTitle">My Form</h3>
+                    <form id="generatedForm">
+                        <!-- Preview will be generated herez -->
+                        <p class="empty-preview">Add form fields to see a preview here.</p>
+                    </form>
+                </div>
+                <div class="">
+                    <button class="button is-link" id="saveForm" type="button">
+                        Save Form
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal for field configuration -->
+        <div id="fieldModal"
+            style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0,0,0,0.5); z-index: 1000;">
+            <div
+                style="background-color: white; width: 90%; max-width: 500px; margin: 50px auto; padding: 20px; border-radius: 5px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">
+                <h2 id="modalTitle">Configure Field</h2>
+
+                <div id="modalContent">
+                    <!-- Will be populated dynamically -->
+                </div>
+
+                <div style="margin-top: 20px; text-align: right;">
+                    <button class="button is-danger" id="cancelField" style="margin-right: 10px;">Cancel</button>
+                    <button class="button is-link" id="saveField">Save Field</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Code Output Modal -->
+        <div style="display: none; position: fixed; top:0; left:0; right:0; bottom:0; background-color: rgba(0,0,0,0.5); z-index: 1000;"
+            id="codeOutput">
+            <div class="" id="prompt-scen">
+                <div class="is-flex is-justify-content-center is-align-items-center" style="height: 100vh;">
+                    <div style="width: 70%; height: 70%; border-radius: 20px; padding: 20px;">
+                        <textarea class="textarea" id="user-prompt" placeholder="Describe your form type."
+                            style="width: 70%; height: 84%; "></textarea>
+
+                        <div class="has-text-right mt-4">
+                            <button class="button is-danger is-rounded is-size-5" id="cancelAI"
+                                style="margin-right: 10px;">Cancel</button>
+                            <a href="form.html">
+                                <button class="button is-link is-rounded is-size-5" id="generate-form"
+                                    style="color: #3f6f59;">Submit</button>
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Main application
+        document.addEventListener('DOMContentLoaded', function () {
+            // Store form fields
+            const formFields = [];
+            let editingFieldIndex = -1;
+
+            // DOM elements
+            const formFieldsList = document.getElementById('formFieldsList');
+            const previewForm = document.getElementById('generatedForm');
+            const formTitle = document.getElementById('formTitle');
+            const previewTitle = document.getElementById('previewTitle');
+            const fieldModal = document.getElementById('fieldModal');
+            const modalContent = document.getElementById('modalContent');
+            const codeOutput = document.getElementById('codeOutput');
+            const htmlCode = document.getElementById('htmlCode');
+            const copyCodeBtn = document.getElementById('copyCode');
+
+            // Form field buttons
+            document.getElementById('addSection').addEventListener('click', () => openFieldModal('section'));
+            document.getElementById('addText').addEventListener('click', () => openFieldModal('text'));
+            document.getElementById('addEmail').addEventListener('click', () => openFieldModal('email'));
+            document.getElementById('addPassword').addEventListener('click', () => openFieldModal('password'));
+            document.getElementById('addTextarea').addEventListener('click', () => openFieldModal('textarea'));
+            document.getElementById('addCheckbox').addEventListener('click', () => openFieldModal('checkbox'));
+            document.getElementById('addRadio').addEventListener('click', () => openFieldModal('radio'));
+            document.getElementById('addSelect').addEventListener('click', () => openFieldModal('select'));
+            document.getElementById('addNumber').addEventListener('click', () => openFieldModal('number'));
+            document.getElementById('addFile').addEventListener('click', () => openFieldModal('file'));
+            document.getElementById('generateCode').addEventListener('click', () => {
+                codeOutput.style.display = 'block';
+                document.getElementById('prompt-scen').style.display = 'block';
+            });
+
+            // Modal buttons
+            document.getElementById('saveField').addEventListener('click', saveField);
+            document.getElementById('cancelField').addEventListener('click', closeFieldModal);
+            document.getElementById('cancelAI').addEventListener('click', () => {
+                codeOutput.style.display = 'none';
+                document.getElementById('prompt-scen').style.display = 'block';
+            });
+
+
+            // Form settings change handlers
+            formTitle.addEventListener('input', updatePreview);
+
+            /**
+             * Opens the field configuration modal for adding a new field
+             * @param {string} fieldType - The type of field to add
+             */
+            function openFieldModal(fieldType, fieldIndex = -1) {
+                // Set editing index
+                editingFieldIndex = fieldIndex;
+
+                // Configure the modal based on field type
+                let modalHTML = '';
+                const fieldData = fieldIndex >= 0 ? formFields[fieldIndex] : null;
+
+                // Common fields for almost all types
+                modalHTML += `
+                <div class="control-group">
+                    <label for="fieldLabel">Field Label</label>
+                    <input type="text" id="fieldLabel" placeholder="Enter field label" value="${fieldData ? fieldData.label : ''}">
+                </div>
+                <div class="control-group">
+                    <label for="fieldName">Field Name</label>
+                    <input type="text" id="fieldName" placeholder="Enter field name" value="${fieldData ? fieldData.name : ''}">
+                </div>
+            `;
+
+                // Type-specific configurations
+                switch (fieldType) {
+                    case 'section':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label for="fieldLabel">Section Title</label>
+                        </div>
+                    `;
+                        break;
+                    case 'text':
+                    case 'email':
+                    case 'password':
+                    case 'number':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label for="fieldPlaceholder">Placeholder</label>
+                            <input type="text" id="fieldPlaceholder" placeholder="Enter placeholder text" value="${fieldData && fieldData.placeholder ? fieldData.placeholder : ''}">
+                        </div>
+                    `;
+                        break;
+
+                    case 'textarea':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label for="fieldPlaceholder">Placeholder</label>
+                            <input type="text" id="fieldPlaceholder" placeholder="Enter placeholder text" value="${fieldData && fieldData.placeholder ? fieldData.placeholder : ''}">
+                        </div>
+                        <div class="control-group">
+                            <label for="fieldRows">Rows</label>
+                            <input type="number" id="fieldRows" min="2" value="${fieldData && fieldData.rows ? fieldData.rows : '4'}">
+                        </div>
+                    `;
+                        break;
+
+                    case 'checkbox':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label for="fieldChecked">
+                                <input type="checkbox" id="fieldChecked" ${fieldData && fieldData.checked ? 'checked' : ''}>
+                                Default checked
+                            </label>
+                        </div>
+                    `;
+                        break;
+
+                    case 'radio':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label>Options (one per line)</label>
+                            <textarea id="fieldOptions" rows="4" placeholder="Option 1&#10;Option 2&#10;Option 3">${fieldData && fieldData.options ? fieldData.options.join('\n') : ''}</textarea>
+                        </div>
+                    `;
+                        break;
+
+                    case 'select':
+                        modalHTML += `
+                        <div class="control-group">
+                            <label for="fieldOptions">Options (one per line)</label>
+                            <textarea id="fieldOptions" rows="4" placeholder="Option 1&#10;Option 2&#10;Option 3">${fieldData && fieldData.options ? fieldData.options.join('\n') : ''}</textarea>
+                        </div>
+                    `;
+                        break;
+                    case 'file':
+                        modalHTML += `
+        <div class="control-group">
+            <label for="fileAccept">Accepted File Types</label>
+            <select id="fileAccept">
+                <option value="">All files (*)</option>
+                <option value="image/*" ${fieldData && fieldData.accept === 'image/*' ? 'selected' : ''}>Images only</option>
+                <option value="image/jpeg,image/png,image/gif" ${fieldData && fieldData.accept === 'image/jpeg,image/png,image/gif' ? 'selected' : ''}>JPG, PNG, GIF</option>
+                <option value=".pdf" ${fieldData && fieldData.accept === '.pdf' ? 'selected' : ''}>PDF files only</option>
+                <option value=".doc,.docx" ${fieldData && fieldData.accept === '.doc,.docx' ? 'selected' : ''}>Word documents</option>
+                <option value=".txt" ${fieldData && fieldData.accept === '.txt' ? 'selected' : ''}>Text files only</option>
+                <option value="audio/*" ${fieldData && fieldData.accept === 'audio/*' ? 'selected' : ''}>Audio files</option>
+                <option value="video/*" ${fieldData && fieldData.accept === 'video/*' ? 'selected' : ''}>Video files</option>
+            </select>
+        </div>
+        <div class="control-group">
+            <label for="fileMultiple">
+                <input type="checkbox" id="fileMultiple" ${fieldData && fieldData.multiple ? 'checked' : ''}>
+                Allow multiple files
+            </label>
+        </div>
+        <div class="control-group">
+            <label for="fileMaxSize">Max File Size (MB)</label>
+            <input type="number" id="fileMaxSize" min="1" max="100" value="${fieldData && fieldData.maxSize ? fieldData.maxSize : '5'}" placeholder="5">
+        </div>
+    `;
+                        break;
+                }
+
+                // Required field option (common for all)
+                modalHTML += `
+                <div class="control-group">
+                    <label for="fieldRequired">
+                        <input type="checkbox" id="fieldRequired" ${fieldData && fieldData.required ? 'checked' : ''}>
+                        Required field
+                    </label>
+                </div>
+            `;
+
+                // Add hidden field for field type
+                modalHTML += `<input type="hidden" id="fieldType" value="${fieldType}">`;
+
+                // Set modal content and show
+                modalContent.innerHTML = modalHTML;
+                fieldModal.style.display = 'block';
+            }
+
+            /**
+             * Closes the field configuration modal
+             */
+            function closeFieldModal() {
+                fieldModal.style.display = 'none';
+                editingFieldIndex = -1;
+            }
+
+            /**
+             * Saves the configured field data
+             */
+            function saveField() {
+                const fieldType = document.getElementById('fieldType').value;
+                const label = document.getElementById('fieldLabel').value || 'Untitled Field';
+                const name = document.getElementById('fieldName').value || label.toLowerCase().replace(/\s+/g, '_');
+                const required = document.getElementById('fieldRequired').checked;
+
+                // Create field data object
+                const fieldData = {
+                    type: fieldType,
+                    label,
+                    name,
+                    required
+                };
+
+                // Add type-specific properties
+                switch (fieldType) {
+                    case 'section':
+                        fieldData.title = label;
+                        break;
+                    case 'text':
+                    case 'email':
+                    case 'password':
+                    case 'number':
+                        fieldData.placeholder = document.getElementById('fieldPlaceholder').value;
+                        break;
+
+                    case 'textarea':
+                        fieldData.placeholder = document.getElementById('fieldPlaceholder').value;
+                        fieldData.rows = document.getElementById('fieldRows').value;
+                        break;
+
+                    case 'checkbox':
+                        fieldData.checked = document.getElementById('fieldChecked').checked;
+                        break;
+
+                    case 'radio':
+                    case 'select':
+                        const options = document.getElementById('fieldOptions').value
+                            .split('\n')
+                            .map(opt => opt.trim())
+                            .filter(opt => opt !== '');
+                        fieldData.options = options.length > 0 ? options : ['Option 1', 'Option 2'];
+                        break;
+                    case 'file':
+                        fieldData.accept = document.getElementById('fileAccept').value;
+                        fieldData.multiple = document.getElementById('fileMultiple').checked;
+                        fieldData.maxSize = document.getElementById('fileMaxSize').value;
+                        break;
+                }
+
+                // Add or update field
+                if (editingFieldIndex >= 0) {
+                    formFields[editingFieldIndex] = fieldData;
+                } else {
+                    formFields.push(fieldData);
+                }
+
+                // Close modal and update display
+                closeFieldModal();
+                updateFieldsList();
+                updatePreview();
+            }
+
+            /**
+             * Updates the list of form fields in the builder
+             */
+            function updateFieldsList() {
+                // Clear the current list
+                formFieldsList.innerHTML = '';
+
+                if (formFields.length === 0) {
+                    formFieldsList.innerHTML = '<div class="empty-message">No fields added yet. Click the buttons above to add form fields.</div>';
+                    return;
+                }
+
+                // Add each field to the list
+                formFields.forEach((field, index) => {
+                    const fieldItem = document.createElement('div');
+                    fieldItem.className = 'field-item';
+
+                    let details = `Type: ${field.type.charAt(0).toUpperCase() + field.type.slice(1)}`;
+                    if (field.required) details += ' | Required';
+
+                    fieldItem.innerHTML = `
+                    <div class="field-title">${field.label}</div>
+                    <div class="field-details">${details}</div>
+                    <button class="delete-field" data-index="${index}">×</button>
+                `;
+
+                    // Add event listeners
+                    fieldItem.addEventListener('click', (e) => {
+                        if (!e.target.classList.contains('delete-field')) {
+                            openFieldModal(field.type, index);
+                        }
+                    });
+
+                    formFieldsList.appendChild(fieldItem);
+                });
+
+                // Add delete field listeners
+                document.querySelectorAll('.delete-field').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const index = parseInt(e.target.getAttribute('data-index'));
+                        formFields.splice(index, 1);
+                        updateFieldsList();
+                        updatePreview();
+                    });
+                });
+            }
+
+            /**
+             * Updates the form preview based on current fields
+             */
+            function updatePreview() {
+                // Update form title
+                const titleText = formTitle.value || 'My Form';
+                previewTitle.textContent = titleText;
+
+                // Clear current preview
+                previewForm.innerHTML = '';
+
+
+                if (formFields.length === 0) {
+                    previewForm.innerHTML = '<p class="empty-preview">Add form fields to see a preview here.</p>';
+                    return;
+                }
+
+                // Add fields to preview
+                formFields.forEach(field => {
+                    const formGroup = document.createElement('div');
+                    formGroup.className = 'form-group';
+
+                    // Create label (except for standalone checkboxes)
+                    if (field.type !== 'checkbox' && field.type !== 'section') {
+                        const label = document.createElement('label');
+                        label.setAttribute('for', field.name);
+                        label.textContent = field.label;
+                        if (field.required) {
+                            const requiredMark = document.createElement('span');
+                            requiredMark.textContent = ' *';
+                            requiredMark.style.color = 'red';
+                            label.appendChild(requiredMark);
+                        }
+                        formGroup.appendChild(label);
+                    }
+                    if (field.type === 'section') {
+                        const sectionTitle = document.createElement('label');
+                        sectionTitle.style.fontSize = '1.5em';
+                        sectionTitle.setAttribute('for', field.name);
+                        sectionTitle.textContent = field.title;
+                        formGroup.appendChild(sectionTitle);
+
+                    }
+
+                    // Create field based on type
+                    switch (field.type) {
+                        case 'text':
+                        case 'email':
+                        case 'password':
+                        case 'number':
+                            const input = document.createElement('input');
+                            input.type = field.type;
+                            input.id = field.name;
+                            input.name = field.name;
+                            if (field.placeholder) input.placeholder = field.placeholder;
+                            if (field.required) input.required = true;
+                            formGroup.appendChild(input);
+                            break;
+
+                        case 'textarea':
+                            const textarea = document.createElement('textarea');
+                            textarea.id = field.name;
+                            textarea.name = field.name;
+                            if (field.placeholder) textarea.placeholder = field.placeholder;
+                            if (field.required) textarea.required = true;
+                            textarea.rows = field.rows || 4;
+                            formGroup.appendChild(textarea);
+                            break;
+
+                        case 'checkbox':
+                            const checkboxContainer = document.createElement('div');
+                            const checkbox = document.createElement('input');
+                            checkbox.type = 'checkbox';
+                            checkbox.id = field.name;
+                            checkbox.name = field.name;
+                            if (field.checked) checkbox.checked = true;
+                            if (field.required) checkbox.required = true;
+
+                            const checkboxLabel = document.createElement('label');
+                            checkboxLabel.setAttribute('for', field.name);
+                            checkboxLabel.textContent = field.label;
+
+                            checkboxContainer.appendChild(checkboxLabel);
+                            checkboxContainer.appendChild(checkbox);
+                            formGroup.appendChild(checkboxContainer);
+                            break;
+
+                        case 'radio':
+                            const radioContainer = document.createElement('div');
+                            radioContainer.className = 'radio-group';
+
+                            field.options.forEach((option, i) => {
+                                const radioId = `${field.name}_${i}`;
+                                const radioWrapper = document.createElement('div');
+                                const radioslot = document.createElement('div');
+                                radioslot.className = 'radio-slot';
+                                const radio = document.createElement('input');
+
+                                radio.type = 'radio';
+                                radio.id = radioId;
+                                radio.name = field.name;
+                                radio.value = option.toLowerCase().replace(/\s+/g, '_');
+                                if (i === 0 && field.required) radio.required = true;
+
+                                const radioLabel = document.createElement('p');
+                                radioLabel.setAttribute('for', radioId);
+                                radioLabel.textContent = option;
+                                radioWrapper.appendChild(radioslot);
+                                radioslot.appendChild(radioLabel);
+                                radioslot.appendChild(radio);
+                                radioContainer.appendChild(radioWrapper);
+                            });
+
+                            formGroup.appendChild(radioContainer);
+                            break;
+
+                        case 'select':
+                            const select = document.createElement('select');
+                            select.id = field.name;
+                            select.name = field.name;
+                            if (field.required) select.required = true;
+
+                            // Add empty option for validation
+                            if (field.required) {
+                                const emptyOption = document.createElement('option');
+                                emptyOption.value = '';
+                                emptyOption.textContent = '-- Please select --';
+                                select.appendChild(emptyOption);
+                            }
+
+                            field.options.forEach(option => {
+                                const optionEl = document.createElement('option');
+                                optionEl.value = option.toLowerCase().replace(/\s+/g, '_');
+                                optionEl.textContent = option;
+                                select.appendChild(optionEl);
+                            });
+
+                            formGroup.appendChild(select);
+                            break;
+                        case 'file':
+                            const fileInput = document.createElement('input');
+                            fileInput.type = 'file';
+                            fileInput.id = field.name;
+                            fileInput.name = field.name;
+                            if (field.accept) fileInput.accept = field.accept;
+                            if (field.multiple) fileInput.multiple = true;
+                            if (field.required) fileInput.required = true;
+
+                            // Add file info display
+                            const fileInfo = document.createElement('div');
+                            fileInfo.style.fontSize = '12px';
+                            fileInfo.style.color = '#666';
+                            fileInfo.style.marginTop = '5px';
+
+                            let infoText = '';
+                            if (field.accept) {
+                                infoText += `Accepted: ${field.accept.replace(/\*/g, 'all')} `;
+                            }
+                            if (field.maxSize) {
+                                infoText += `Max size: ${field.maxSize}MB `;
+                            }
+                            if (field.multiple) {
+                                infoText += `(Multiple files allowed)`;
+                            }
+
+                            if (infoText) {
+                                fileInfo.textContent = infoText;
+                                formGroup.appendChild(fileInput);
+                                formGroup.appendChild(fileInfo);
+                            } else {
+                                formGroup.appendChild(fileInput);
+                            }
+                            break;
+                    }
+
+                    previewForm.appendChild(formGroup);
+                });
+
+
+            }
+
+            const saveFormBtn = document.getElementById('saveForm');
+            saveFormBtn.addEventListener('click', function (e) {
+                e.preventDefault(); // Prevent default button behavior
+                saveFormToLocalStorage();
+            });
+
+            function saveFormToLocalStorage() {
+                const formData = {
+                    title: formTitle.value || 'Untitled Form',
+                    fields: [...formFields],
+                    dateCreated: new Date().toISOString()
+                };
+
+                const savedForms = JSON.parse(localStorage.getItem('savedForms')) || [];
+                savedForms.push(formData);
+                localStorage.setItem('savedForms', JSON.stringify(savedForms));
+
+                alert('Form saved successfully! You can access it in the "My Forms" page.');
+                console.log('Saved forms:', savedForms);
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
